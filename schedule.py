@@ -10,7 +10,7 @@ ste_shifts = [f"ste_{x}" for x in range(1, 28)]
 con_shifts = [f"con_{x}" for x in range(1, 28)]
 shifts = [*sys_shifts, *ste_shifts, *con_shifts]
 print(shifts)
-employees = ["A", "B", "C"]
+employees = ["A", "B", "C", "D", "E"]
 x = LpVariable.dicts("assign", [(e, s) for e in employees for s in shifts], cat='Binary')
 max_shifts = LpVariable("Max_Shifts", lowBound=0, cat='Integer')
 
