@@ -17,15 +17,22 @@ max_shifts = LpVariable("Max_Shifts", lowBound=0, cat='Integer')
 # Define objective function (example: minimize number of employees working)
 prob += lpSum([x[e, s] for e in employees for s in shifts])
 
-# Define constraints (example: each shift needs exactly one employee)
+# Define constraints (example: each shift needs at least one employee)
 for s in shifts:
     prob += lpSum([x[e, s] for e in employees]) == 1
 
 # set max shifts per employee
 for e in employees:
-    prob += lpSum(x[e, s] for s in shifts) <= 27, f"Max_Shifts_Limit_{e}" # Limit shifts per person
-    prob += max_shifts >= lpSum(x[e, s] for s in shifts), f"Link_Max_Shifts_{e}" # Link max_shifts to the actual shifts
-
+    prob += lpSum(x[e, s] for s in sys_shifts) == 9, f"Max_Sys_Shifts_Limit_{e}" # Limit shifts per person
+    prob += max_shifts >= lpSum(x[e, s] for s in sys_shifts), f"Link_Max_Sys_Shifts_{e}" # Link max_shifts to the actual shifts
+# set max shifts per employee
+for e in employees:
+    prob += lpSum(x[e, s] for s in ste_shifts) == 9, f"Max_Ste_Shifts_Limit_{e}" # Limit shifts per person
+    prob += max_shifts >= lpSum(x[e, s] for s in ste_shifts), f"Link_Max_Ste_Shifts_{e}" # Link max_shifts to the actual shifts
+# set max shifts per employee
+for e in employees:
+    prob += lpSum(x[e, s] for s in con_shifts) == 9, f"Max_Con_Shifts_Limit_{e}" # Limit shifts per person
+    prob += max_shifts >= lpSum(x[e, s] for s in con_shifts), f"Link_Max_Con_Shifts_{e}" # Link max_shifts to the actual shifts
 
 # Add more constraints as needed, e.g.,
 # - An employee can work at most one shift per day
